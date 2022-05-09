@@ -27,7 +27,7 @@ create external table store_returns
 )
 partitioned by (sr_returned_date_sk bigint)
 stored as ${FILE}
-location "s3a://${S3DIR}/store_returns"
+location "${DB_LOCATION}/store_returns"
 ;
 
 from ${SOURCE}.store_returns sr

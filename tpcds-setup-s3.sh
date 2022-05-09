@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function usage {
-	echo "Usage: tpcds-setup.sh scale_factor s3_path [temp_directory]"
+	echo "Usage: tpcds-setup.sh scale_factor db_location [temp_directory]"
 	exit 1
 }
 
@@ -29,7 +29,7 @@ FACTS="store_sales store_returns web_sales web_returns catalog_sales catalog_ret
 
 # Get the parameters.
 SCALE=$1
-S3DIR=$2
+DB_LOCATION=$2
 DIR=$3
 if [ "X$BUCKET_DATA" != "X" ]; then
 	BUCKETS=13
@@ -46,7 +46,7 @@ fi
 if [ X"$SCALE" = "X" ]; then
 	usage
 fi
-if [ X"$S3DIR" = "X" ]; then
+if [ X"$DB_LOCATION" = "X" ]; then
 	usage
 fi
 if [ X"$DIR" = "X" ]; then
@@ -102,11 +102,11 @@ REDUCERS=$((test ${SCALE} -gt ${MAX_REDUCERS} && echo ${MAX_REDUCERS}) || echo $
 # Populate the smaller tables.
 for t in ${DIMS}
 do
-	COMMAND="$HIVE  -i settings/load-partitioned.sql -f ddl-tpcds/bin_partitioned_s3/${t}.sql \
+	COMMAND="$HIVE  -i settings/load-partitioned.sql -f ddl-tpcds/bin_partitioned_ext/${t}.sql \
 	    --hivevar DB=${DATABASE} --hivevar SOURCE=tpcds_text_${SCALE} \
         --hivevar SCALE=${SCALE} \
 	    --hivevar REDUCERS=${REDUCERS} \
-	    --hivevar S3DIR=${S3DIR} \
+	    --hivevar DB_LOCATION=${DB_LOCATION} \
 	    --hivevar FILE=${FORMAT}"
 	echo -e "${t}:\n\t@$COMMAND $SILENCE && echo 'Optimizing table $t ($i/$total).'" >> $LOAD_FILE
 	i=`expr $i + 1`
@@ -114,11 +114,11 @@ done
 
 for t in ${FACTS}
 do
-	COMMAND="$HIVE  -i settings/load-partitioned.sql -f ddl-tpcds/bin_partitioned_s3/${t}.sql \
+	COMMAND="$HIVE  -i settings/load-partitioned.sql -f ddl-tpcds/bin_partitioned_ext/${t}.sql \
 	    --hivevar DB=${DATABASE} \
         --hivevar SCALE=${SCALE} \
 	    --hivevar SOURCE=tpcds_text_${SCALE} --hivevar BUCKETS=${BUCKETS} \
-	    --hivevar S3DIR=${S3DIR} \
+	    --hivevar DB_LOCATION=${DB_LOCATION} \
 	    --hivevar RETURN_BUCKETS=${RETURN_BUCKETS} --hivevar REDUCERS=${REDUCERS} --hivevar FILE=${FORMAT}"
 	echo -e "${t}:\n\t@$COMMAND $SILENCE && echo 'Optimizing table $t ($i/$total).'" >> $LOAD_FILE
 	i=`expr $i + 1`

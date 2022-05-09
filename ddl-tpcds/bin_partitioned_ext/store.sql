@@ -5,7 +5,7 @@ drop table if exists store;
 
 create external table store
 stored as ${FILE}
-location "s3a://${S3DIR}/store"
+location "${DB_LOCATION}/store"
 as select * from ${SOURCE}.store
 CLUSTER BY s_store_sk
 ;

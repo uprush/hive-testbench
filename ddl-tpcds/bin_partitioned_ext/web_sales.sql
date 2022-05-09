@@ -41,7 +41,7 @@ create external table web_sales
 )
 partitioned by (ws_sold_date_sk           bigint)
 stored as ${FILE}
-location "s3a://${S3DIR}/web_sales"
+location "${DB_LOCATION}/web_sales"
 ;
 
 from ${SOURCE}.web_sales ws

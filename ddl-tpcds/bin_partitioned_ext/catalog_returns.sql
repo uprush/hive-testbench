@@ -34,7 +34,7 @@ create external table catalog_returns
 )
 partitioned by (cr_returned_date_sk bigint)
 stored as ${FILE}
-location "s3a://${S3DIR}/catalog_returns"
+location "${DB_LOCATION}/catalog_returns"
 ;
 
 from ${SOURCE}.catalog_returns cr

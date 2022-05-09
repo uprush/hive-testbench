@@ -31,7 +31,7 @@ create external table web_returns
 )
 partitioned by (wr_returned_date_sk       bigint)
 stored as ${FILE}
-location "s3a://${S3DIR}/web_returns"
+location "${DB_LOCATION}/web_returns"
 ;
 
 from ${SOURCE}.web_returns wr

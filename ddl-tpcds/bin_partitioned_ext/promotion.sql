@@ -5,5 +5,5 @@ drop table if exists promotion;
 
 create external table promotion
 stored as ${FILE}
-location "s3a://${S3DIR}/promotion"
+location "${DB_LOCATION}/promotion"
 as select * from ${SOURCE}.promotion;

@@ -5,5 +5,5 @@ drop table if exists reason;
 
 create external table reason
 stored as ${FILE}
-location "s3a://${S3DIR}/reason"
+location "${DB_LOCATION}/reason"
 as select * from ${SOURCE}.reason;

@@ -41,7 +41,7 @@ create external table catalog_sales
 )
 partitioned by (cs_sold_date_sk bigint)
 stored as ${FILE}
-location "s3a://${S3DIR}/catalog_sales"
+location "${DB_LOCATION}/catalog_sales"
 ;
 
 from ${SOURCE}.catalog_sales cs

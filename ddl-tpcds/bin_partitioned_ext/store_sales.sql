@@ -30,7 +30,7 @@ create external table store_sales
 )
 partitioned by (ss_sold_date_sk bigint)
 stored as ${FILE}
-location "s3a://${S3DIR}/store_sales"
+location "${DB_LOCATION}/store_sales"
 ;
 
 from ${SOURCE}.store_sales ss

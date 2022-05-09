@@ -5,5 +5,5 @@ drop table if exists warehouse;
 
 create external table warehouse
 stored as ${FILE}
-location "s3a://${S3DIR}/warehouse"
+location "${DB_LOCATION}/warehouse"
 as select * from ${SOURCE}.warehouse;

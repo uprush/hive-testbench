@@ -5,5 +5,5 @@ drop table if exists catalog_page;
 
 create external table catalog_page
 stored as ${FILE}
-location "s3a://${S3DIR}/catalog_page"
+location "${DB_LOCATION}/catalog_page"
 as select * from ${SOURCE}.catalog_page;
