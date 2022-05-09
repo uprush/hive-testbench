@@ -33,7 +33,7 @@ my $db = {
 print "filename,status,time,rows\n";
 for my $query ( @queries ) {
 	my $logname = "$query.log";
-	my $cmd="echo 'use $db->{${suite}}; source $query;' | hive -i testbench.settings 2>&1  | tee $query.log";
+	my $cmd="echo 'use $db->{${suite}}; source sf1000.settings; source $query;' | beeline -n hive -u 'jdbc:hive2://localhost:10000' 2>&1  | tee $query.log";
 #	my $cmd="cat $query.log";
 	#print $cmd ; exit;
 	
