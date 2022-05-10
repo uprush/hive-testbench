@@ -45,7 +45,7 @@ for my $query ( @queries ) {
 	my $hiveEnd = time();
 	my $hiveTime = $hiveEnd - $hiveStart;
 	foreach my $line ( @hiveoutput ) {
-		if( $line =~ /Time taken:\s+([\d\.]+)\s+seconds,\s+Fetched:\s+(\d+)\s+row/ ) {
+		if( $line =~ /rows* selected\s+([\d\.]+)\s+seconds\s+/ ) {
 			print "$query,success,$hiveTime,$2\n"; 
 		} elsif( 
 			$line =~ /^FAILED: /
